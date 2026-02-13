@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Jalebi - Royal Aesthetic Love</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(-45deg,#ff0080,#ff4da6,#8a2be2,#000);
+    background-size:400% 400%;
+    animation: gradientMove 15s ease infinite;
+}
+
+@keyframes gradientMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.card{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    backdrop-filter:blur(25px);
+    background:rgba(255,255,255,0.1);
+    padding:50px;
+    border-radius:30px;
+    text-align:center;
+    color:white;
+    box-shadow:0 0 60px rgba(255,0,150,0.8);
+    width:90%;
+    max-width:600px;
+}
+
+h1{
+    font-size:45px;
+    background:linear-gradient(45deg,#fff,#ffccff,#ff69b4);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+button{
+    margin-top:20px;
+    padding:15px 40px;
+    border:none;
+    border-radius:50px;
+    background:linear-gradient(45deg,#ff1493,#ff69b4);
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    transition:0.4s;
+    box-shadow:0 0 25px pink;
+}
+
+button:hover{
+    transform:scale(1.15);
+}
+
+.message{
+    margin-top:20px;
+    font-size:18px;
+    min-height:150px;
+}
+
+.rose{
+    position:absolute;
+    top:-50px;
+    font-size:25px;
+    animation:fall linear infinite;
+}
+
+@keyframes fall{
+    to{
+        transform:translateY(110vh) rotate(360deg);
+    }
+}
+
+.ring{
+    font-size:60px;
+    opacity:0;
+    transition:1s;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h1>Happy Valentine's Day 💖</h1>
+    <h2>For My Sweetest Jalebi 🧡</h2>
+    <button onclick="startMagic()">Unlock My Heart 💌</button>
+    <div class="message" id="typewriter"></div>
+    <div class="ring" id="ring">💍</div>
+</div>
+
+<audio autoplay loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mp3">
+</audio>
+
+<script>
+// THREE JS 3D JALebi
+let scene=new THREE.Scene();
+let camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
+let renderer=new THREE.WebGLRenderer({alpha:true});
+renderer.setSize(window.innerWidth,window.innerHeight);
+document.body.appendChild(renderer.domElement);
+camera.position.z=5;
+
+let geo=new THREE.TorusKnotGeometry(1.5,0.4,200,32);
+let mat=new THREE.MeshStandardMaterial({
+    color:0xffa500,
+    emissive:0xff6600,
+    metalness:1,
+    roughness:0
+});
+let jalebi=new THREE.Mesh(geo,mat);
+scene.add(jalebi);
+
+let light=new THREE.PointLight(0xffffff,2);
+light.position.set(5,5,5);
+scene.add(light);
+
+function animate(){
+    requestAnimationFrame(animate);
+    jalebi.rotation.x+=0.01;
+    jalebi.rotation.y+=0.01;
+    renderer.render(scene,camera);
+}
+animate();
+
+// Rose petals
+function createRose(){
+    let rose=document.createElement("div");
+    rose.className="rose";
+    rose.innerHTML="🌹";
+    rose.style.left=Math.random()*100+"vw";
+    rose.style.animationDuration=(Math.random()*5+5)+"s";
+    document.body.appendChild(rose);
+    setTimeout(()=>rose.remove(),10000);
+}
+setInterval(createRose,500);
+
+// Typewriter love message
+let text=`My sweetest Jalebi 🧡,
+You are the golden spiral of my universe,
+the warmth in my winters,
+the sparkle in my darkest nights.
+Every heartbeat of mine whispers your name.
+With you, life feels magical,
+beautiful,
+eternal.
+I love you beyond infinity and back. 💖✨`;
+
+let i=0;
+function typeWriter(){
+    if(i<text.length){
+        document.getElementById("typewriter").innerHTML+=text.charAt(i);
+        i++;
+        setTimeout(typeWriter,40);
+    } else {
+        document.getElementById("ring").style.opacity=1;
+        fireworks();
+    }
+}
+
+function startMagic(){
+    typeWriter();
+}
+
+// Firework sparkle
+function fireworks(){
+    for(let i=0;i<150;i++){
+        let spark=document.createElement("div");
+        spark.style.position="absolute";
+        spark.style.width="4px";
+        spark.style.height="4px";
+        spark.style.background="white";
+        spark.style.top="50%";
+        spark.style.left="50%";
+        spark.style.borderRadius="50%";
+        spark.style.transition="1s";
+        document.body.appendChild(spark);
+
+        let x=(Math.random()-0.5)*1000;
+        let y=(Math.random()-0.5)*1000;
+
+        setTimeout(()=>{
+            spark.style.transform=`translate(${x}px,${y}px)`;
+            spark.style.opacity=0;
+        },10);
+
+        setTimeout(()=>spark.remove(),1000);
+    }
+}
+</script>
+
+</body>
+</html>
